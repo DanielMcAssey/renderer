@@ -15,8 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 public class JTileWorkerManager {
 
-    private ExecutorService tileWorkerPool;
-
     private void defaultTile(TranscoderInput input,
                              Integer posX,
                              Integer posY,
@@ -64,7 +62,7 @@ public class JTileWorkerManager {
     }
 
     public void startWorkers(File[] filesToRender, File destinationDir) throws InterruptedException {
-        tileWorkerPool = Executors.newFixedThreadPool(64);
+        ExecutorService tileWorkerPool = Executors.newFixedThreadPool(64);
 
         for (File file: filesToRender) {
             tileWorkerPool.execute(() -> tileWorker(file, destinationDir));
