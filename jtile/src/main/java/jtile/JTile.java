@@ -9,8 +9,7 @@ public class JTile {
     public static void main(String[] args) throws Exception {
         File sourceDir = new File(args[0]);
         File destinationDir = new File(args[1]);
-        //File sourceDir = new File("./tmp/");
-        //File destinationDir = new File("./tiles/");
+
         File[] foundFiles = sourceDir.listFiles(((dir, name) -> name.endsWith(".svg")));
 
         try {

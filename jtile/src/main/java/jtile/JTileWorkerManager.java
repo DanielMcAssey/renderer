@@ -65,7 +65,7 @@ public class JTileWorkerManager {
                             if(newSvgFile.exists()) {
                                 TranscoderInput newInput = new TranscoderInput(newSvgFile.toURI().toString());
                                 zoomTile(newInput, (deltaXY / 2), (nthX * 2 + newX), (nthY * 2 + newY), posX, posY, (posZ + 1), sourceDir, destinationDir);
-                                //newSvgFile.delete();
+                                newSvgFile.delete();
                             }
                         } catch (IOException | TranscoderException ex) {
                             System.out.println(ex.getMessage());
@@ -122,7 +122,7 @@ public class JTileWorkerManager {
                 zoomTile(input, 256, 0, 0, posX, posY, 12, sourceDir, destinationDir);
             }
 
-            //svgFile.delete();
+            svgFile.delete();
         } catch (IOException | TranscoderException ex) {
             System.err.println(ex.getMessage());
         }
@@ -136,6 +136,7 @@ public class JTileWorkerManager {
             tileWorkerPool.execute(() -> tileWorker(file, sourceDir, destinationDir));
         }
 
+        tileWorkerPool.shutdown();
         tileWorkerPool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
     }
 
