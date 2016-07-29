@@ -1,0 +1,28 @@
+#!/bin/bash
+
+wget http://tiles.openseamap.org/seamark/world.osm
+diff world.osm next.osm | grep id= | grep -v "<tag" > diffs
+java -jar jsearch.jar ./
+mv next.osm world.osm
+
+for file in $(ls tmp | grep "\.osm"); do
+	tx=$(echo $file | cut -f 1 -d'-')
+	ty=$(echo $file | cut -f 2 -d'-')
+	z=$(echo $file | cut -f 3 -d'-')
+	z=$(echo $z | cut -f 1 -d'.')
+	
+	if [ $z = 12 ]; then
+		for k in {12..18}; do
+			if [ -e tmp/$tx-$ty-$k.svg ]; then
+				../searender/searender ../searender/symbols/symbols.defs $k >tmp/$tx-$ty-$k.svg <tmp/$file
+			fi
+		done;
+	else
+		if [ -e tmp/$tx-$ty-$k.svg ]; then
+			../searender/searender ../searender/symbols/symbols.defs $z >tmp/$tx-$ty-$z.svg <tmp/$file
+		fi
+	fi
+	rm tmp/$file
+	java -jar jtile.jar tmp/ tiles/
+	echo "$(date) rendering $z $tx $ty" >> log.txt
+done;
