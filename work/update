@@ -1,6 +1,7 @@
 #!/bin/bash
 
-wget http://tiles.openseamap.org/seamark/world.osm
+rm -f next.osm
+wget -O next.osm http://tiles.openseamap.org/seamark/world.osm
 diff world.osm next.osm | grep id= | grep -v "<tag" > diffs
 java -jar jsearch.jar ./
 mv next.osm world.osm
