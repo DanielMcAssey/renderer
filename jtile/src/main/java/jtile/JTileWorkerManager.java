@@ -129,7 +129,7 @@ public class JTileWorkerManager {
     }
 
     public void startWorkers(File[] filesToRender, File sourceDir, File destinationDir) throws InterruptedException {
-        tileWorkerPool = Executors.newFixedThreadPool(128);
+        tileWorkerPool = Executors.newFixedThreadPool(64);
 
         for (File file: filesToRender) {
             System.out.println("Rendering file: " + file.getName());
